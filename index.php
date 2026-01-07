@@ -1,28 +1,15 @@
 <?php
+
 require_once "functions.php";
+require_once "Database.php";
 
-$dsn = "mysql:host=localhost;port=3306;user=root;password=;dbname=blog;charset=utf8mb4";
+$db = new Database();
+$posts = $db->query("SELECT * FROM posts")->fetchAll(PDO::FETCH_ASSOC);
 
-$pdo = new PDO($dsn);   
-
-var_dump($pdo);
-
-echo "<br>";
-
-$statement = $pdo->prepare("SELECT * FROM posts");
-
-$statement->execute();
-
-$posts = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-echo "<pre>";
-var_dump($posts);
-echo "</pre>";
+$firstPost = $db->query("SELECT * FROM posts WHERE id = 1")->fetch(PDO::FETCH_ASSOC);
 
 echo "<ul>";
     foreach($posts as $post) {
         echo "<li>" . $post["content"] . "</li>";
-}
+    }
 echo "</ul>";
-
-?>
